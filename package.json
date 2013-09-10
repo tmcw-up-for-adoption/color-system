@@ -1,0 +1,26 @@
+{
+  "name": "color-system",
+  "version": "0.0.0",
+  "description": "transfer colors between color systems",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "keywords": [
+    "color",
+    "system",
+    "rgb",
+    "cie",
+    "lab",
+    "xyz"
+  ],
+  "author": "Tom MacWright <tom@macwright.org>",
+  "license": "BSD",
+  "devDependencies": {
+    "expect.js": "~0.2.0",
+    "mocha": "~1.12.1"
+  }
+}
