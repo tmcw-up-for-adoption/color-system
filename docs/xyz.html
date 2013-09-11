@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>xyz.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="constants.html">
+                constants.js
+              </a>
+            
+              
+              <a class="source" href="hsl.html">
+                hsl.js
+              </a>
+            
+              
+              <a class="source" href="hsv.html">
+                hsv.js
+              </a>
+            
+              
+              <a class="source" href="hue.html">
+                hue.js
+              </a>
+            
+              
+              <a class="source" href="lab.html">
+                lab.js
+              </a>
+            
+              
+              <a class="source" href="lightness.html">
+                lightness.js
+              </a>
+            
+              
+              <a class="source" href="math.html">
+                math.js
+              </a>
+            
+              
+              <a class="source" href="rgb_linear.html">
+                rgb_linear.js
+              </a>
+            
+              
+              <a class="source" href="saturation.html">
+                saturation.js
+              </a>
+            
+              
+              <a class="source" href="value.html">
+                value.js
+              </a>
+            
+              
+              <a class="source" href="xyz.html">
+                xyz.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>xyz.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>module.exports = <span class="keyword">function</span>(rgb) {
+    <span class="keyword">var</span> linrgb = rgb.map(srgb_linearrgb);
+    <span class="keyword">var</span> x = xyz_lab(<span class="number">0.4124564</span> * r + <span class="number">0.3575761</span> * g + <span class="number">0.1804375</span> * b) / X,
+        y = xyz_lab(<span class="number">0.2126729</span> * r + <span class="number">0.7151522</span> * g + <span class="number">0.0721750</span> * b) / Y,
+        z = xyz_lab(<span class="number">0.0193339</span> * r + <span class="number">0.1191920</span> * g + <span class="number">0.9503041</span> * b) / Z;
+    <span class="keyword">return</span> [<span class="number">116</span> * y - <span class="number">16</span>, <span class="number">500</span> * (x - y), <span class="number">200</span> * (y - z)];
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p><a href="http://www.sjbrown.co.uk/2004/05/14/gamma-correct-rendering/">http://www.sjbrown.co.uk/2004/05/14/gamma-correct-rendering/</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="function"><span class="keyword">function</span> <span class="title">srgb_linearrgb</span><span class="params">(_)</span> {</span>
+    <span class="keyword">if</span> ((r /= <span class="number">255</span>) &lt;= <span class="number">0.04045</span>) <span class="keyword">return</span> r / <span class="number">12.92</span>;
+    <span class="keyword">else</span> <span class="keyword">return</span> Math.pow((r + <span class="number">0.055</span>) / <span class="number">1.055</span>, <span class="number">2.4</span>);
+}
+
+<span class="function"><span class="keyword">function</span> <span class="title">xyz_lab</span><span class="params">(_)</span> {</span>
+    <span class="keyword">if</span> (x &gt; <span class="number">0.008856</span>) <span class="keyword">return</span> Math.pow(x, <span class="number">1</span> / <span class="number">3</span>);
+    <span class="keyword">else</span> <span class="keyword">return</span> (<span class="number">7.787037</span> * x + <span class="number">4</span> / <span class="number">29</span>);
+}</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

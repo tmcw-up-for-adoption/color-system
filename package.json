@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha -R spec",
+    "make": "docco src/* && browserify index.js --standalone colorSystem > colorsystem.js"
   },
   "keywords": [
     "color",
@@ -21,6 +22,7 @@
   "license": "BSD",
   "devDependencies": {
     "expect.js": "~0.2.0",
-    "mocha": "~1.12.1"
+    "mocha": "~1.12.1",
+    "docco": "~0.6.2"
   }
 }

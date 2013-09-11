@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>lab.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="constants.html">
+                constants.js
+              </a>
+            
+              
+              <a class="source" href="hsl.html">
+                hsl.js
+              </a>
+            
+              
+              <a class="source" href="hsv.html">
+                hsv.js
+              </a>
+            
+              
+              <a class="source" href="hue.html">
+                hue.js
+              </a>
+            
+              
+              <a class="source" href="lab.html">
+                lab.js
+              </a>
+            
+              
+              <a class="source" href="lightness.html">
+                lightness.js
+              </a>
+            
+              
+              <a class="source" href="math.html">
+                math.js
+              </a>
+            
+              
+              <a class="source" href="rgb_linear.html">
+                rgb_linear.js
+              </a>
+            
+              
+              <a class="source" href="saturation.html">
+                saturation.js
+              </a>
+            
+              
+              <a class="source" href="value.html">
+                value.js
+              </a>
+            
+              
+              <a class="source" href="xyz.html">
+                xyz.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>lab.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="keyword">var</span> constants = require(<span class="string">'./constants'</span>),
+    rgb_linear = require(<span class="string">'./rgb_linear'</span>);
+
+module.exports = <span class="function"><span class="keyword">function</span> <span class="title">rgb_lab</span><span class="params">(rgb)</span> {</span>
+    rgb = rgb_linear(rgb);
+    <span class="keyword">var</span> x = xyz_lab(<span class="number">0.4124564</span> * rgb[<span class="number">0</span>] + <span class="number">0.3575761</span> * rgb[<span class="number">1</span>] + <span class="number">0.1804375</span> * rgb[<span class="number">2</span>]) / constants.X,
+        y = xyz_lab(<span class="number">0.2126729</span> * rgb[<span class="number">0</span>] + <span class="number">0.7151522</span> * rgb[<span class="number">1</span>] + <span class="number">0.0721750</span> * rgb[<span class="number">2</span>]) / constants.Y,
+        z = xyz_lab(<span class="number">0.0193339</span> * rgb[<span class="number">0</span>] + <span class="number">0.1191920</span> * rgb[<span class="number">1</span>] + <span class="number">0.9503041</span> * rgb[<span class="number">2</span>]) / constants.Z;
+    <span class="keyword">return</span> [<span class="number">116</span> * y - <span class="number">16</span>, <span class="number">500</span> * (x - y), <span class="number">200</span> * (y - z)];
+};
+
+<span class="function"><span class="keyword">function</span> <span class="title">xyz_lab</span><span class="params">(_)</span> {</span>
+    <span class="keyword">if</span> (_ &gt; <span class="number">0.008856</span>) <span class="keyword">return</span> Math.pow(_, <span class="number">1</span> / <span class="number">3</span>);
+    <span class="keyword">else</span> <span class="keyword">return</span> (<span class="number">7.787037</span> * _ + <span class="number">4</span> / <span class="number">29</span>);
+}</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

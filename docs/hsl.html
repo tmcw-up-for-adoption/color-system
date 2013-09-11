@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>hsl.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="constants.html">
+                constants.js
+              </a>
+            
+              
+              <a class="source" href="hsl.html">
+                hsl.js
+              </a>
+            
+              
+              <a class="source" href="hsv.html">
+                hsv.js
+              </a>
+            
+              
+              <a class="source" href="hue.html">
+                hue.js
+              </a>
+            
+              
+              <a class="source" href="lab.html">
+                lab.js
+              </a>
+            
+              
+              <a class="source" href="lightness.html">
+                lightness.js
+              </a>
+            
+              
+              <a class="source" href="math.html">
+                math.js
+              </a>
+            
+              
+              <a class="source" href="rgb_linear.html">
+                rgb_linear.js
+              </a>
+            
+              
+              <a class="source" href="saturation.html">
+                saturation.js
+              </a>
+            
+              
+              <a class="source" href="value.html">
+                value.js
+              </a>
+            
+              
+              <a class="source" href="xyz.html">
+                xyz.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>hsl.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="keyword">var</span> hue = require(<span class="string">'./hue'</span>),
+    saturation = require(<span class="string">'./saturation'</span>),
+    lightness = require(<span class="string">'./lightness'</span>);
+
+module.exports = <span class="function"><span class="keyword">function</span> <span class="title">hsl</span><span class="params">(rgb)</span> {</span>
+    <span class="keyword">return</span> [hue(rgb), saturation(rgb), lightness(rgb)];
+};
+
+module.exports.invert = <span class="function"><span class="keyword">function</span> <span class="title">rgb</span><span class="params">(hsl)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>if this HSL color has no saturation component, it&#39;s a shade of grey -
+so it&#39;s simply composed of a grey corresponding to its luminosity value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (!hsl[<span class="number">1</span>]) <span class="keyword">return</span> [hsl[<span class="number">2</span>] * <span class="number">255</span>, hsl[<span class="number">2</span>] * <span class="number">255</span>, hsl[<span class="number">2</span>] * <span class="number">255</span>];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>unpack the components for easier reference</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> h = hsl[<span class="number">0</span>] / <span class="number">360</span>,
+        s = hsl[<span class="number">1</span>],
+        l = hsl[<span class="number">2</span>],
+        t2 = (l &lt; <span class="number">0.5</span>) ? l * (<span class="number">1</span> + s) : l + s - l * s,
+        t1 = <span class="number">2</span> * l - t2,
+        t3 = [h + <span class="number">1</span>/<span class="number">3</span>, h, h - <span class="number">1</span>/<span class="number">3</span>];
+
+    <span class="keyword">return</span> t3.map(component).map(<span class="keyword">function</span>(_) { <span class="keyword">return</span> _ * <span class="number">255</span>; });
+
+    <span class="function"><span class="keyword">function</span> <span class="title">component</span><span class="params">(t)</span> {</span>
+        <span class="keyword">if</span> (t &lt; <span class="number">0</span>) t += <span class="number">1</span>;
+        <span class="keyword">if</span> (t &gt; <span class="number">1</span>) t -= <span class="number">1</span>;
+        <span class="keyword">if</span> (<span class="number">6</span> * t &lt; <span class="number">1</span>) <span class="keyword">return</span> t1 + (t2 - t1) * <span class="number">6</span> * t;
+        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="number">2</span> * t &lt; <span class="number">1</span>) <span class="keyword">return</span> t2;
+        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="number">3</span> * t &lt; <span class="number">2</span>) <span class="keyword">return</span> t1 + (t2 - t1) * ((<span class="number">2</span> / <span class="number">3</span>) - t3[i]) * <span class="number">6</span>;
+        <span class="keyword">else</span> <span class="keyword">return</span> t1;
+    }
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

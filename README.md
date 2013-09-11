@@ -6,7 +6,13 @@ Convert and compute in color systems (RGB, HSV, HSL, LAB, XYZ, LCH)
 
 ## usage
 
+in [node.js](http://nodejs.org/)
+
     npm install color-system
+
+in browsers
+
+    wget https://raw.github.com/tmcw/color-system/master/colorsystem.js
 
 ## api
 
@@ -30,6 +36,12 @@ var colorsys = require('color-system');
 colorsys.hsl([0, 0, 0]); // [r, g, b] => [h, s, l]
 colorsys.hsv([0, 0, 0]); // [r, g, b] => [h, s, v]
 ```
+
+## development
+
+build docs & standalone for browsers:
+
+    npm run-script make
 
 ## see also
 
