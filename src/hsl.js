@@ -1,15 +1,21 @@
 var hue = require('./hue'),
     saturation = require('./saturation'),
-    luminosity = require('./luminosity');
+    lightness = require('./lightness');
 
 module.exports = function hsl(rgb) {
-    return [hue(rgb), saturation(rgb), luminosity(rgb)];
+    return [hue(rgb), saturation(rgb), lightness(rgb)];
 };
 
 module.exports.invert = function rgb(hsl) {
+    // if this HSL color has no saturation component, it's a shade of grey -
+    // so it's simply composed of a grey corresponding to its luminosity value.
     if (!hsl[1]) return [hsl[2] * 255, hsl[2] * 255, hsl[2] * 255];
-    var h = hsl[0] / 360, s = hsl[1], l = hsl[2],
-        t2 = (l < 0.5) ? l * (1+s) : l+s-l*s,
+
+    // unpack the components for easier reference
+    var h = hsl[0] / 360,
+        s = hsl[1],
+        l = hsl[2],
+        t2 = (l < 0.5) ? l * (1 + s) : l + s - l * s,
         t1 = 2 * l - t2,
         t3 = [h + 1/3, h, h - 1/3];
 

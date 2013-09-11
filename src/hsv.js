@@ -7,14 +7,20 @@ module.exports = function hsl(rgb) {
 };
 
 module.exports.invert = function rgb(hsv) {
+    // if this HSL color has no saturation component, it's a shade of grey -
+    // so it's simply composed of a grey corresponding to its luminosity value.
     if (!hsv[1]) return [hsv[2] * 255, hsv[2] * 255, hsv[2] * 255];
-    var h = hsv[0], s = hsv[1], v = hsv[2] * 255;
-    h /= 60;
+
+    var h = hsv[0] / 60,
+        s = hsv[1],
+        v = hsv[2] * 255;
+
     var i = Math.floor(h),
         f = h - i,
         p = v * (1 - s),
         q = v * (1 - s * f),
         t = v * (1 - s * (1 - f));
+
     switch (i) {
         case 0: return [v, t, p];
         case 1: return [q, v, p];
