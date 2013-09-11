@@ -8,7 +8,18 @@ module.exports.hsl = require('./src/hsl');
 module.exports.hsv = require('./src/hsv');
 module.exports.rgb_linear = require('./src/rgb_linear');
 
-},{"./src/hue":2,"./src/saturation":3,"./src/lightness":4,"./src/lab":5,"./src/hsl":6,"./src/hsv":7,"./src/rgb_linear":8}],2:[function(require,module,exports){
+},{"./src/hue":2,"./src/saturation":3,"./src/lightness":4,"./src/lab":5,"./src/hsl":6,"./src/rgb_linear":7,"./src/hsv":8}],7:[function(require,module,exports){
+module.exports = function srgb_linearrgb(rgb) {
+    return rgb.map(function(_) {
+        _ /= 255;
+        if (_ <= 0.04045) return _ / 12.92;
+        else return Math.pow((_ + 0.055) / 1.055, 2.4);
+    });
+};
+
+},{}],2:[function(require,module,exports){
+var math = require('./math');
+
 module.exports = function hue(rgb) {
 
     rgb = rgb.map(function(r) { return r /= 255; });
@@ -17,8 +28,8 @@ module.exports = function hue(rgb) {
     var r = rgb[0],
         g = rgb[1],
         b = rgb[2],
-        min = Math.min(r, g, b),
-        max = Math.max(r, g, b),
+        min = math.min(rgb),
+        max = math.max(rgb),
         delta = max - min;
 
     // compute the angle from the most dominate color direction to its
@@ -35,16 +46,7 @@ module.exports = function hue(rgb) {
     return h < 0 ? h + 360 : h;
 };
 
-},{}],8:[function(require,module,exports){
-module.exports = function srgb_linearrgb(rgb) {
-    return rgb.map(function(_) {
-        _ /= 255;
-        if (_ <= 0.04045) return _ / 12.92;
-        else return Math.pow((_ + 0.055) / 1.055, 2.4);
-    });
-};
-
-},{}],3:[function(require,module,exports){
+},{"./math":9}],3:[function(require,module,exports){
 var math = require('./math');
 
 module.exports = function saturation(rgb) {
@@ -59,6 +61,16 @@ module.exports = function saturation(rgb) {
 
     return (l < 0.5) ? ((max - min) / (max + min)) :
         (max - min) / (2 - max - min);
+};
+
+},{"./math":9}],4:[function(require,module,exports){
+var math = require('./math');
+
+// color lightness, from the perspective of RGB - simply the average
+// of the minimum and maximum components.
+module.exports = function lightness(rgb) {
+    rgb = rgb.map(function(r) { return r /= 255; });
+    return (math.max(rgb) + math.min(rgb)) / 2;
 };
 
 },{"./math":9}],5:[function(require,module,exports){
@@ -78,7 +90,7 @@ function xyz_lab(_) {
     else return (7.787037 * _ + 4 / 29);
 }
 
-},{"./constants":10,"./rgb_linear":8}],6:[function(require,module,exports){
+},{"./constants":10,"./rgb_linear":7}],6:[function(require,module,exports){
 var hue = require('./hue'),
     saturation = require('./saturation'),
     lightness = require('./lightness');
@@ -112,17 +124,7 @@ module.exports.invert = function rgb(hsl) {
     }
 };
 
-},{"./hue":2,"./saturation":3,"./lightness":4}],4:[function(require,module,exports){
-var math = require('./math');
-
-// color lightness, from the perspective of RGB - simply the average
-// of the minimum and maximum components.
-module.exports = function lightness(rgb) {
-    rgb = rgb.map(function(r) { return r /= 255; });
-    return (math.max(rgb) + math.min(rgb)) / 2;
-};
-
-},{"./math":9}],7:[function(require,module,exports){
+},{"./hue":2,"./saturation":3,"./lightness":4}],8:[function(require,module,exports){
 var hue = require('./hue'),
     saturation = require('./saturation'),
     value = require('./value');
@@ -157,6 +159,9 @@ module.exports.invert = function rgb(hsv) {
 };
 
 },{"./hue":2,"./saturation":3,"./value":11}],9:[function(require,module,exports){
+// a few tricks to make math simpler and easier. This trick
+// originates with [Prototype](http://ejohn.org/blog/fast-javascript-maxmin/)
+
 module.exports.min = function(a) {
     return Math.min.apply(Math, a);
 };

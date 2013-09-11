@@ -96,7 +96,9 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>module.exports = <span class="function"><span class="keyword">function</span> <span class="title">hue</span><span class="params">(rgb)</span> {</span>
+            <div class="content"><div class='highlight'><pre><span class="keyword">var</span> math = require(<span class="string">'./math'</span>);
+
+module.exports = <span class="function"><span class="keyword">function</span> <span class="title">hue</span><span class="params">(rgb)</span> {</span>
 
     rgb = rgb.map(<span class="keyword">function</span>(r) { <span class="keyword">return</span> r /= <span class="number">255</span>; });</pre></div></div>
             
@@ -116,8 +118,8 @@
             <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> r = rgb[<span class="number">0</span>],
         g = rgb[<span class="number">1</span>],
         b = rgb[<span class="number">2</span>],
-        min = Math.min(r, g, b),
-        max = Math.max(r, g, b),
+        min = math.min(rgb),
+        max = math.max(rgb),
         delta = max - min;</pre></div></div>
             
         </li>
