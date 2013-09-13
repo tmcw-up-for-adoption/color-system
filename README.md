@@ -47,9 +47,10 @@ build docs & standalone for browsers:
 
 'full solutions'
 
-* [chroma.js](https://github.com/gka/chroma.js)
-* [chromatist](https://github.com/jrus/chromatist)
 * [Style.js](https://github.com/Mutatio/Style.js)
+* [color-convert](https://github.com/harthur/color-convert) (js)
+* [chroma.js](https://github.com/gka/chroma.js) (coffee)
+* [chromatist](https://github.com/jrus/chromatist) (coffee)
 * [ColorMine](https://github.com/THEjoezack/ColorMine)
 
 'modules'
