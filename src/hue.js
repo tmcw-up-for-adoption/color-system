@@ -23,5 +23,5 @@ module.exports = function hue(rgb) {
     }
 
     // clamp the output to ensure that invalid hues are not output
-    return h < 0 ? h + 360 : h;
+    return math.degreeClamp(h);
 };

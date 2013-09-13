@@ -49,6 +49,8 @@ build docs & standalone for browsers:
 
 * [chroma.js](https://github.com/gka/chroma.js)
 * [chromatist](https://github.com/jrus/chromatist)
+* [Style.js](https://github.com/Mutatio/Style.js)
+* [ColorMine](https://github.com/THEjoezack/ColorMine)
 
 'modules'
 
