@@ -19,6 +19,11 @@
           <div id="jump_page">
             
               
+              <a class="source" href="cmyk.html">
+                cmyk.js
+              </a>
+            
+              
               <a class="source" href="constants.html">
                 constants.js
               </a>
@@ -96,11 +101,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="keyword">var</span> math = require(<span class="string">'./math'</span>);
-
-module.exports = <span class="function"><span class="keyword">function</span> <span class="title">hue</span><span class="params">(rgb)</span> {</span>
-
-    rgb = rgb.map(<span class="keyword">function</span>(r) { <span class="keyword">return</span> r /= <span class="number">255</span>; });</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="keyword">var</span> math = require(<span class="string">'./math'</span>);</pre></div></div>
             
         </li>
         
@@ -110,6 +111,23 @@ module.exports = <span class="function"><span class="keyword">function</span> <s
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Compute the hue of a color in degrees from 0-360</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>module.exports = <span class="function"><span class="keyword">function</span> <span class="title">hue</span><span class="params">(rgb)</span> {</span>
+
+    rgb = rgb.map(<span class="keyword">function</span>(r) { <span class="keyword">return</span> r /= <span class="number">255</span>; });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <p>unpack r, g, b values for reference</p>
 
@@ -125,11 +143,11 @@ module.exports = <span class="function"><span class="keyword">function</span> <s
         </li>
         
         
-        <li id="section-3">
+        <li id="section-4">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>compute the angle from the most dominate color direction to its
 location between the other two colors</p>
@@ -147,17 +165,17 @@ location between the other two colors</p>
         </li>
         
         
-        <li id="section-4">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>clamp the output to ensure that invalid hues are not output</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">return</span> h &lt; <span class="number">0</span> ? h + <span class="number">360</span> : h;
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">return</span> math.degreeClamp(h);
 };</pre></div></div>
             
         </li>

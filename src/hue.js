@@ -1,5 +1,6 @@
 var math = require('./math');
 
+// Compute the hue of a color in degrees from 0-360
 module.exports = function hue(rgb) {
 
     rgb = rgb.map(function(r) { return r /= 255; });

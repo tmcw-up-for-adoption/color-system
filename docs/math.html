@@ -19,6 +19,11 @@
           <div id="jump_page">
             
               
+              <a class="source" href="cmyk.html">
+                cmyk.js
+              </a>
+            
+              
               <a class="source" href="constants.html">
                 constants.js
               </a>
@@ -104,6 +109,28 @@ originates with <a href="http://ejohn.org/blog/fast-javascript-maxmin/">Prototyp
 
 module.exports.max = <span class="keyword">function</span>(a) {
     <span class="keyword">return</span> Math.max.apply(Math, a);
+};
+
+module.exports.clamp = <span class="keyword">function</span>(_, min, max) {
+    <span class="keyword">return</span> Math.min(Math.max(_, min), max);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>ensure that degrees wrap around negative and &gt;360 values</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>module.exports.degreeClamp = <span class="keyword">function</span>(_) {
+    <span class="keyword">while</span> (_ &lt; <span class="number">0</span>) _ += <span class="number">360</span>;
+    <span class="keyword">return</span> _ % <span class="number">360</span>;
 };</pre></div></div>
             
         </li>

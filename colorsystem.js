@@ -5,10 +5,35 @@ module.exports.saturation = require('./src/saturation');
 module.exports.lightness = require('./src/lightness');
 module.exports.lab = require('./src/lab');
 module.exports.hsl = require('./src/hsl');
+module.exports.xyz = require('./src/xyz');
 module.exports.hsv = require('./src/hsv');
+module.exports.cmyk = require('./src/cmyk');
 module.exports.rgb_linear = require('./src/rgb_linear');
 
-},{"./src/hue":2,"./src/saturation":3,"./src/lightness":4,"./src/lab":5,"./src/hsl":6,"./src/rgb_linear":7,"./src/hsv":8}],7:[function(require,module,exports){
+},{"./src/hue":2,"./src/saturation":3,"./src/lightness":4,"./src/lab":5,"./src/hsl":6,"./src/xyz":7,"./src/hsv":8,"./src/cmyk":9,"./src/rgb_linear":10}],7:[function(require,module,exports){
+// # [CIE XYZ Color Space](http://en.wikipedia.org/wiki/CIE_1931_color_space)
+//
+// The first perceptual, mathematically derived color space.
+module.exports = function(rgb) {
+    var xyz = rgb.map(srgb_linearrgb);
+    return [
+        ((xyz[0] * 0.4124) + (xyz[1] * 0.3576) + (xyz[2] * 0.1805)) * 100,
+        ((xyz[0] * 0.2126) + (xyz[1] * 0.7152) + (xyz[2] * 0.0722)) * 100,
+        ((xyz[0] * 0.0193) + (xyz[1] * 0.1192) + (xyz[2] * 0.9505)) * 100];
+};
+
+// http://www.sjbrown.co.uk/2004/05/14/gamma-correct-rendering/
+function srgb_linearrgb(_) {
+    if ((_ /= 255) <= 0.04045) return _ / 12.92;
+    else return Math.pow((_ + 0.055) / 1.055, 2.4);
+}
+
+},{}],10:[function(require,module,exports){
+// # Linear RGB
+//
+// RGB triplets are [stored in sRGB](http://en.wikipedia.org/wiki/SRGB) and
+// converted to and from linear values on the fly. THis conversion compensates
+// for a non-linear conversion including gamma.
 module.exports = function srgb_linearrgb(rgb) {
     return rgb.map(function(_) {
         _ /= 255;
@@ -20,6 +45,7 @@ module.exports = function srgb_linearrgb(rgb) {
 },{}],2:[function(require,module,exports){
 var math = require('./math');
 
+// Compute the hue of a color in degrees from 0-360
 module.exports = function hue(rgb) {
 
     rgb = rgb.map(function(r) { return r /= 255; });
@@ -43,18 +69,24 @@ module.exports = function hue(rgb) {
     }
 
     // clamp the output to ensure that invalid hues are not output
-    return h < 0 ? h + 360 : h;
+    return math.degreeClamp(h);
 };
 
-},{"./math":9}],3:[function(require,module,exports){
+},{"./math":11}],3:[function(require,module,exports){
 var math = require('./math');
 
+// # [Saturation](http://bit.ly/1f0wzW7)
+//
+// The saturation of a color is determined by a combination of light
+// intensity and how much it is distributed across the spectrum
+// of different wavelengths.
 module.exports = function saturation(rgb) {
     rgb = rgb.map(function(r) { return r /= 255; });
 
     var min = math.min(rgb),
         max = math.max(rgb);
 
+    // all shades of grey, including white and black, have zero saturation.
     if (min === max) return 0;
 
     var l = (min + max) / 2;
@@ -63,9 +95,11 @@ module.exports = function saturation(rgb) {
         (max - min) / (2 - max - min);
 };
 
-},{"./math":9}],4:[function(require,module,exports){
+},{"./math":11}],4:[function(require,module,exports){
 var math = require('./math');
 
+// # Lightness
+//
 // color lightness, from the perspective of RGB - simply the average
 // of the minimum and maximum components.
 module.exports = function lightness(rgb) {
@@ -73,7 +107,7 @@ module.exports = function lightness(rgb) {
     return (math.max(rgb) + math.min(rgb)) / 2;
 };
 
-},{"./math":9}],5:[function(require,module,exports){
+},{"./math":11}],5:[function(require,module,exports){
 var constants = require('./constants'),
     rgb_linear = require('./rgb_linear');
 
@@ -90,7 +124,7 @@ function xyz_lab(_) {
     else return (7.787037 * _ + 4 / 29);
 }
 
-},{"./constants":10,"./rgb_linear":7}],6:[function(require,module,exports){
+},{"./constants":12,"./rgb_linear":10}],6:[function(require,module,exports){
 var hue = require('./hue'),
     saturation = require('./saturation'),
     lightness = require('./lightness');
@@ -129,6 +163,7 @@ var hue = require('./hue'),
     saturation = require('./saturation'),
     value = require('./value');
 
+// HSV Color: Hue, Saturation, Value
 module.exports = function hsl(rgb) {
     return [hue(rgb), saturation(rgb), value(rgb)];
 };
@@ -158,10 +193,40 @@ module.exports.invert = function rgb(hsv) {
     }
 };
 
-},{"./hue":2,"./saturation":3,"./value":11}],9:[function(require,module,exports){
+},{"./hue":2,"./saturation":3,"./value":13}],9:[function(require,module,exports){
+var math = require('./math');
+
+// # [CMYK](http://en.wikipedia.org/wiki/CMYK_color_model)
+//
+// Is a substractive color model, used in printing. As opposed to additive
+// color models like RGB, the combination of the colors in ink forms primaries,
+//
+//     Y + M = R
+//     Y + C = G
+//     M + C = B
+module.exports = function(rgb) {
+    if (math.max(rgb) === 0) return [0, 0, 0, 1];
+
+    // The `key` color is the darkest in the RGB triplet. The intensity
+    // of other colors is based on this single factor.
+    var key = math.min(rgb) / 255,
+        inv_key = 1 - key;
+
+    rgb = rgb.map(function(_) { return ((1 - (_ / 255)) - key) / inv_key; });
+
+    // CMYK colors are represented by a 4-number array with values
+    // from 0-1
+    return [
+        rgb[0],
+        rgb[1],
+        rgb[2],
+        key
+    ];
+};
+
+},{"./math":11}],11:[function(require,module,exports){
 // a few tricks to make math simpler and easier. This trick
 // originates with [Prototype](http://ejohn.org/blog/fast-javascript-maxmin/)
-
 module.exports.min = function(a) {
     return Math.min.apply(Math, a);
 };
@@ -170,7 +235,17 @@ module.exports.max = function(a) {
     return Math.max.apply(Math, a);
 };
 
-},{}],10:[function(require,module,exports){
+module.exports.clamp = function(_, min, max) {
+    return Math.min(Math.max(_, min), max);
+};
+
+// ensure that degrees wrap around negative and >360 values
+module.exports.degreeClamp = function(_) {
+    while (_ < 0) _ += 360;
+    return _ % 360;
+};
+
+},{}],12:[function(require,module,exports){
 module.exports = {
 
     // Corresponds roughly to RGB brighter/darker
@@ -183,13 +258,13 @@ module.exports = {
 
 };
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 var math = require('./math');
 
 module.exports = function value(rgb) {
     return math.max(rgb) / 255;
 };
 
-},{"./math":9}]},{},[1])(1)
+},{"./math":11}]},{},[1])(1)
 });
 ;

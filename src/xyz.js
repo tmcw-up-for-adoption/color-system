@@ -1,3 +1,6 @@
+// # [CIE XYZ Color Space](http://en.wikipedia.org/wiki/CIE_1931_color_space)
+//
+// The first perceptual, mathematically derived color space.
 module.exports = function(rgb) {
     var xyz = rgb.map(srgb_linearrgb);
     return [

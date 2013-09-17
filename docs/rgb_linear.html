@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>rgb_linear.js</title>
+  <title>Linear RGB</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -17,6 +17,11 @@
           <a class="small" href="javascript:void(0);">+</a>
           <div id="jump_wrapper">
           <div id="jump_page">
+            
+              
+              <a class="source" href="cmyk.html">
+                cmyk.js
+              </a>
             
               
               <a class="source" href="constants.html">
@@ -79,21 +84,19 @@
     
     <ul class="sections">
         
-          <li id="title">
-              <div class="annotation">
-                  <h1>rgb_linear.js</h1>
-              </div>
-          </li>
-        
         
         
         <li id="section-1">
             <div class="annotation">
               
-              <div class="pilwrap ">
+              <div class="pilwrap for-h1">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              
+              <h1>Linear RGB</h1>
+<p>RGB triplets are <a href="http://en.wikipedia.org/wiki/SRGB">stored in sRGB</a> and
+converted to and from linear values on the fly. THis conversion compensates
+for a non-linear conversion including gamma.</p>
+
             </div>
             
             <div class="content"><div class='highlight'><pre>module.exports = <span class="function"><span class="keyword">function</span> <span class="title">srgb_linearrgb</span><span class="params">(rgb)</span> {</span>

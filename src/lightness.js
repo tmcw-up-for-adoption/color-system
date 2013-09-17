@@ -1,5 +1,7 @@
 var math = require('./math');
 
+// # Lightness
+//
 // color lightness, from the perspective of RGB - simply the average
 // of the minimum and maximum components.
 module.exports = function lightness(rgb) {

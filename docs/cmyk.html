@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>saturation.js</title>
+  <title>cmyk.js</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -86,7 +86,7 @@
         
           <li id="title">
               <div class="annotation">
-                  <h1>saturation.js</h1>
+                  <h1>cmyk.js</h1>
               </div>
           </li>
         
@@ -112,18 +112,17 @@
               <div class="pilwrap for-h1">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <h1><a href="http://bit.ly/1f0wzW7">Saturation</a></h1>
-<p>The saturation of a color is determined by a combination of light
-intensity and how much it is distributed across the spectrum
-of different wavelengths.</p>
+              <h1><a href="http://en.wikipedia.org/wiki/CMYK_color_model">CMYK</a></h1>
+<p>Is a substractive color model, used in printing. As opposed to additive
+color models like RGB, the combination of the colors in ink forms primaries,</p>
+<pre><code>Y + M = R
+Y + C = G
+M + C = B</code></pre>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>module.exports = <span class="function"><span class="keyword">function</span> <span class="title">saturation</span><span class="params">(rgb)</span> {</span>
-    rgb = rgb.map(<span class="keyword">function</span>(r) { <span class="keyword">return</span> r /= <span class="number">255</span>; });
-
-    <span class="keyword">var</span> min = math.min(rgb),
-        max = math.max(rgb);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>module.exports = <span class="keyword">function</span>(rgb) {
+    <span class="keyword">if</span> (math.max(rgb) === <span class="number">0</span>) <span class="keyword">return</span> [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>];</pre></div></div>
             
         </li>
         
@@ -134,16 +133,36 @@ of different wavelengths.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>all shades of grey, including white and black, have zero saturation.</p>
+              <p>The <code>key</code> color is the darkest in the RGB triplet. The intensity
+of other colors is based on this single factor.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (min === max) <span class="keyword">return</span> <span class="number">0</span>;
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> key = math.min(rgb) / <span class="number">255</span>,
+        inv_key = <span class="number">1</span> - key;
 
-    <span class="keyword">var</span> l = (min + max) / <span class="number">2</span>;
+    rgb = rgb.map(<span class="keyword">function</span>(_) { <span class="keyword">return</span> ((<span class="number">1</span> - (_ / <span class="number">255</span>)) - key) / inv_key; });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>CMYK colors are represented by a 4-number array with values
+from 0-1</p>
 
-    <span class="keyword">return</span> (l &lt; <span class="number">0.5</span>) ? ((max - min) / (max + min)) :
-        (max - min) / (<span class="number">2</span> - max - min);
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">return</span> [
+        rgb[<span class="number">0</span>],
+        rgb[<span class="number">1</span>],
+        rgb[<span class="number">2</span>],
+        key
+    ];
 };</pre></div></div>
             
         </li>

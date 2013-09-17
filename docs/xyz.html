@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>xyz.js</title>
+  <title>[CIE XYZ Color Space](http://en.wikipedia.org/wiki/CIE_1931_color_space)</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -17,6 +17,11 @@
           <a class="small" href="javascript:void(0);">+</a>
           <div id="jump_wrapper">
           <div id="jump_page">
+            
+              
+              <a class="source" href="cmyk.html">
+                cmyk.js
+              </a>
             
               
               <a class="source" href="constants.html">
@@ -79,29 +84,25 @@
     
     <ul class="sections">
         
-          <li id="title">
-              <div class="annotation">
-                  <h1>xyz.js</h1>
-              </div>
-          </li>
-        
         
         
         <li id="section-1">
             <div class="annotation">
               
-              <div class="pilwrap ">
+              <div class="pilwrap for-h1">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              
+              <h1><a href="http://en.wikipedia.org/wiki/CIE_1931_color_space">CIE XYZ Color Space</a></h1>
+<p>The first perceptual, mathematically derived color space.</p>
+
             </div>
             
             <div class="content"><div class='highlight'><pre>module.exports = <span class="keyword">function</span>(rgb) {
-    <span class="keyword">var</span> linrgb = rgb.map(srgb_linearrgb);
-    <span class="keyword">var</span> x = xyz_lab(<span class="number">0.4124564</span> * r + <span class="number">0.3575761</span> * g + <span class="number">0.1804375</span> * b) / X,
-        y = xyz_lab(<span class="number">0.2126729</span> * r + <span class="number">0.7151522</span> * g + <span class="number">0.0721750</span> * b) / Y,
-        z = xyz_lab(<span class="number">0.0193339</span> * r + <span class="number">0.1191920</span> * g + <span class="number">0.9503041</span> * b) / Z;
-    <span class="keyword">return</span> [<span class="number">116</span> * y - <span class="number">16</span>, <span class="number">500</span> * (x - y), <span class="number">200</span> * (y - z)];
+    <span class="keyword">var</span> xyz = rgb.map(srgb_linearrgb);
+    <span class="keyword">return</span> [
+        ((xyz[<span class="number">0</span>] * <span class="number">0.4124</span>) + (xyz[<span class="number">1</span>] * <span class="number">0.3576</span>) + (xyz[<span class="number">2</span>] * <span class="number">0.1805</span>)) * <span class="number">100</span>,
+        ((xyz[<span class="number">0</span>] * <span class="number">0.2126</span>) + (xyz[<span class="number">1</span>] * <span class="number">0.7152</span>) + (xyz[<span class="number">2</span>] * <span class="number">0.0722</span>)) * <span class="number">100</span>,
+        ((xyz[<span class="number">0</span>] * <span class="number">0.0193</span>) + (xyz[<span class="number">1</span>] * <span class="number">0.1192</span>) + (xyz[<span class="number">2</span>] * <span class="number">0.9505</span>)) * <span class="number">100</span>];
 };</pre></div></div>
             
         </li>
@@ -118,13 +119,8 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="function"><span class="keyword">function</span> <span class="title">srgb_linearrgb</span><span class="params">(_)</span> {</span>
-    <span class="keyword">if</span> ((r /= <span class="number">255</span>) &lt;= <span class="number">0.04045</span>) <span class="keyword">return</span> r / <span class="number">12.92</span>;
-    <span class="keyword">else</span> <span class="keyword">return</span> Math.pow((r + <span class="number">0.055</span>) / <span class="number">1.055</span>, <span class="number">2.4</span>);
-}
-
-<span class="function"><span class="keyword">function</span> <span class="title">xyz_lab</span><span class="params">(_)</span> {</span>
-    <span class="keyword">if</span> (x &gt; <span class="number">0.008856</span>) <span class="keyword">return</span> Math.pow(x, <span class="number">1</span> / <span class="number">3</span>);
-    <span class="keyword">else</span> <span class="keyword">return</span> (<span class="number">7.787037</span> * x + <span class="number">4</span> / <span class="number">29</span>);
+    <span class="keyword">if</span> ((_ /= <span class="number">255</span>) &lt;= <span class="number">0.04045</span>) <span class="keyword">return</span> _ / <span class="number">12.92</span>;
+    <span class="keyword">else</span> <span class="keyword">return</span> Math.pow((_ + <span class="number">0.055</span>) / <span class="number">1.055</span>, <span class="number">2.4</span>);
 }</pre></div></div>
             
         </li>
