@@ -11,15 +11,19 @@ module.exports = function hue(rgb) {
         b = rgb[2],
         min = math.min(rgb),
         max = math.max(rgb),
-        delta = max - min;
+        delta = max - min,
+        h;
+
 
     // compute the angle from the most dominate color direction to its
     // location between the other two colors
-    if (r == max) {
+    if (max === min) {
+        return 0;
+    } else if (r === max) {
         h = 60 * ((g - b) / delta);
-    } else if (g == max) {
+    } else if (g === max) {
         h = 60 * (2 + (b - r) / delta);
-    } else if (b == max) {
+    } else if (b === max) {
         h = 60 * (4 + (r - g) / delta);
     }
 

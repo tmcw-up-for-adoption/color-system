@@ -26,7 +26,7 @@ module.exports.invert = function rgb(hsl) {
         if (t > 1) t -= 1;
         if (6 * t < 1) return t1 + (t2 - t1) * 6 * t;
         else if (2 * t < 1) return t2;
-        else if (3 * t < 2) return t1 + (t2 - t1) * ((2 / 3) - t3[i]) * 6;
+        else if (3 * t < 2) return t1 + (t2 - t1) * (4 - 6 * t);
         else return t1;
     }
 };

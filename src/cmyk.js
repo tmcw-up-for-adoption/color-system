@@ -13,17 +13,26 @@ module.exports = function(rgb) {
 
     // The `key` color is the darkest in the RGB triplet. The intensity
     // of other colors is based on this single factor.
-    var key = math.min(rgb) / 255,
-        inv_key = 1 - key;
 
-    rgb = rgb.map(function(_) { return ((1 - (_ / 255)) - key) / inv_key; });
+    var key = 1 - math.max(rgb) / 255,
+        cmk = rgb.map(function(_) { return 1 - _ / (255 * (1 - key)); });
+
 
     // CMYK colors are represented by a 4-number array with values
     // from 0-1
     return [
-        rgb[0],
-        rgb[1],
-        rgb[2],
+        cmk[0],
+        cmk[1],
+        cmk[2],
         key
     ];
+};
+
+module.exports.invert = function(cymk) {
+    var c = cymk[0];
+    var y = cymk[1];
+    var m = cymk[2];
+    var key = cymk[3];
+
+    return [c, y, m].map(function(_) { return 255 * (1 - _) * (1 - key); });
 };
