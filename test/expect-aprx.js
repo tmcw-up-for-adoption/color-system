@@ -5,7 +5,7 @@ expect.Assertion.prototype.aprx = function aprx(color) {
 
     if (Array.isArray(this.obj)) {
         success = (this.obj.length === color.length) && this.obj.every(function(value, index) {
-            var factor = (value < 1) ? 100 : 1;
+            var factor = (value <= 1) ? 100 : 1;
 
             return Math.round(value * factor) === Math.round(color[index] * factor);
         });
